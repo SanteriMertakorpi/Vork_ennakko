@@ -44,7 +44,7 @@ const Calendar = () => {
     <div className="p-4 rounded-sm">
       <div className="flex justify-between items-center">
         <button onClick={prevWeek}>&lt;</button>
-        <h3>{monthName}, Viikko {weekNumber}</h3>
+        <h3>{monthName}, vko {weekNumber}</h3>
         <button onClick={nextWeek}>&gt;</button>
       </div>
       <div>
