@@ -38,24 +38,24 @@ const StartDWorkDay = () => {
         <div>
 
             
-            <div className="grid grid-cols-1 gap-4 bg-slate-50 m-6">
+            <div className="grid grid-cols-1 gap-4 bg-white m-6 rounded-md">
                 <div className="grid justify-items-center p-4">
-                    <p className="text-xs">Työmaalle kirjautuminen</p>
+                    <p className="text-xs text-gray-500">Työmaalle kirjautuminen</p>
                     <p className="text-2xl">{showTime}</p>
-                    <button className="w-5/6 h-14 rounded-md bg-green-600">
+                    <button className="w-5/6 h-14 rounded-md bg-green-600 font-semibold text-white">
                         Kirjaudu työmaalle
                     </button>
                 </div>
                 
             </div>
-            <div className="grid grid-cols-1 gap-4 bg-slate-50 m-6">
+            <div className="grid grid-cols-1 gap-4 bg-white m-6 rounded-md">
                 <div className="grid justify-items-center p-4">
                     <p className="text-xs">Työaika</p>
             
                     <p className="text-xl">{formatTime(elapsedTime)}</p>
                     <div className="flex justify-between w-5/6">
                         <button
-                        className="w-1/2 h-14 rounded-md bg-yellow-600 mr-2"
+                        className="w-1/2 h-10 rounded-md bg-white mr-2 my-2 border-2 font-semibold"
                         onClick={() => {
                                 setIsPaused(!isPaused);
                                 if (!isPaused) {
@@ -66,7 +66,7 @@ const StartDWorkDay = () => {
                             {isPaused ? "Jatka" : "Tauko"}
                         </button>
                         <button
-                            className="w-1/2 h-14 rounded-md bg-red-600"
+                            className="w-1/2 h-10 rounded-md bg-red-600 my-2 text-white font-semibold"
                             onClick={() => {
                                 setStartWorkDay(false);
                                 setElapsedTime(0);
@@ -83,12 +83,12 @@ const StartDWorkDay = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 bg-slate-50 m-6">
+    <div className="grid grid-cols-1 gap-4 bg-white m-6 rounded-md">
       <div className="grid justify-items-center p-4">
-        <p className="text-xs">Aloitusaika</p>
+        <p className="text-xs text-gray-500">Aloitusaika</p>
         <p className="text-2xl">{showTime}</p>
         <button
-          className="w-5/6 h-14 rounded-md bg-green-600"
+          className="mt-4 w-11/12 h-12 rounded-md bg-startbutton text-white text-xl font-semibold"
           onClick={() => {
             setStartWorkDay(true);
             setStartTime(new Date());

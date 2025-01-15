@@ -13,18 +13,19 @@ const getWeek = (startDate) => {
 const getCurrentWeekStart = () => {
   const now = new Date();
   const day = now.getDay();
-  const diff = now.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is sunday
+  const diff = now.getDate() - day + (day === 0 ? -6 : 1);
   return new Date(now.setDate(diff));
 };
 
 const getWeekNumber = (date) => {
   const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
   const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
-  return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+  return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7) === 53 ? 1: Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
 };
 
 const Calendar = () => {
   const [currentWeekStart, setCurrentWeekStart] = useState(getCurrentWeekStart());
+  const currentDay = new Date().getDate();
 
   const nextWeek = () => {
     setCurrentWeekStart(new Date(currentWeekStart.setDate(currentWeekStart.getDate() + 7)));
@@ -35,27 +36,29 @@ const Calendar = () => {
   };
 
   const currentWeek = getWeek(currentWeekStart);
-  const monthName = currentWeekStart.toLocaleString('fi-FI', { month: 'long' });
+  const monthName = currentWeekStart.toLocaleString('fi-FI', { month: 'long' }).charAt(0).toUpperCase() + currentWeekStart.toLocaleString('fi-FI', { month: 'long' }).slice(1);
   const weekNumber = getWeekNumber(currentWeekStart);
   const dayNames = ['Ma', 'Ti', 'Ke', 'To', 'Pe', 'La', 'Su'];
   const dayNumbers = currentWeek.map(date => date.getDate());
 
   return (
-    <div className="p-4 rounded-sm">
-      <div className="flex justify-between items-center">
-        <button onClick={prevWeek}>&lt;</button>
-        <h3>{monthName}, vko {weekNumber}</h3>
-        <button onClick={nextWeek}>&gt;</button>
+    <div className="p-4 rounded-t-3xl bg-stone-100 border-b-2">
+      <div className="flex justify-between items-center mb-4 pl-6 pr-6 text-navbarbackground">
+        <button onClick={prevWeek} className="font-extrabold text-lg">&lt;</button>
+        <h3 className="text-lg font-semibold">{monthName}, vko {weekNumber}</h3>
+        <button onClick={nextWeek} className="font-extrabold text-lg">&gt;</button>
       </div>
       <div>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-4 pl-6 pr-6 text-navbarbackground font-bold">
           {dayNames.map((day, index) => (
             <div key={index}>{day}</div>
           ))}
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-4 pl-6 pr-6 text-navbarbackground">
           {dayNumbers.map((day, index) => (
-            <div key={index}>{day}</div>
+            <div key={index} className={day === currentDay ? "bg-blue-500 text-white rounded-full w-12 h-12 flex items-center justify-center" : ""}>
+              {day}
+            </div>
           ))}
         </div>
       </div>

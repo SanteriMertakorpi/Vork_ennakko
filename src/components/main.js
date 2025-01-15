@@ -5,10 +5,13 @@ import StartDWorkDay from "./startWorkDay";
 
 const Main = () => {
     return(
-        <div className="bg-slate-200 min-h-screen">
+        <div className="bg-sky-950 min-h-screen">
             <Header />
-            <Calendar />
-            <StartDWorkDay />
+            <div className="bg-mainbackground  rounded-t-3xl min-h-screen">
+                <Calendar />
+                <StartDWorkDay />
+            </div>
+            
         </div>
         
     )

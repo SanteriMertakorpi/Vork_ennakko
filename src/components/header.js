@@ -1,11 +1,17 @@
 import React from "react";
+import Navbar from "./navbar";
 const Header = () => {
     return(
-        <div className="flex justify-between items-center p-4 bg-blue-500 text-white">
-            <h2 >Kellokortti</h2>
-            <p>time</p>
+        <div className="bg-sky-950">
+            <div className="flex justify-between items-center p-4 text-white min-h-24">
+                
+                <h2 className="font-bold">Kellokortti</h2>
+                
+                
+            </div>
+            <Navbar />
         </div>
-
+        
     )
 };
 
