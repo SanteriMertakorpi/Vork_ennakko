@@ -12,7 +12,7 @@ const Navbar = () => {
     };
 
     return(
-        <div className="relative flex justify-center items-center bg-navbarbackground p-2 rounded-full w-fit mx-auto my-2">
+        <div className="relative flex justify-center items-center bg-navbarbackground p-2 rounded-full w-fit mx-auto mb-6">
             <div className="absolute top-0 left-0 h-full bg-white rounded-full transition-all duration-300"
             style={{
                 width: `${100 / tabs.length}%`,
