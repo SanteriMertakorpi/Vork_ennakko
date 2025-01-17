@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "./navbar";
-const Header = () => {
+const Header = ({workTimePage, setWorkTimePage}) => {
     return(
         <div className="bg-sky-950">
             <div className="flex justify-between items-center p-4 text-white min-h-24">
@@ -9,7 +9,7 @@ const Header = () => {
                 
                 
             </div>
-            <Navbar />
+            <Navbar workTimePage={workTimePage} setWorkTimePage={setWorkTimePage} />
         </div>
         
     )

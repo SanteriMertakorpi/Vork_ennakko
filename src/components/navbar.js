@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-const Navbar = () => {
+import React, {useState, useEffect} from "react";
+const Navbar = ({workTimePage, setWorkTimePage}) => {
     const [activeTab, setActivetab] = useState("tyoaika");
 
     const tabs = [
@@ -10,6 +10,10 @@ const Navbar = () => {
     const getTabPositions = (tabId) => {
         return tabs.findIndex((tab) => tab.id === tabId);
     };
+
+    useEffect(() => {
+        setWorkTimePage(activeTab === "tyoaika");
+    }, [activeTab, setWorkTimePage]);
 
     return(
         <div className="relative flex justify-center items-center bg-navbarbackground p-2 rounded-full w-fit mx-auto mb-6">
