@@ -8,7 +8,8 @@ const Sumup = ({ onCancel, onAccept, startTime, stopTime, breakStartTime, breakE
   const [date, setDate] = useState(formatDate(new Date()));
   const [startTimeState, setStartTimeState] = useState(startTime);
   const [endTimeState, setEndTimeState] = useState(stopTime);
-  const [overclockHours, setOverclockHours] = useState(0);
+  const [overtimeHours, setOvertimeHours] = useState(0);
+  const [overtimeMinutes, setOvertimeMinutes] = useState(0);
   const [breakStart, setBreakStart] = useState(breakStartTime);
   const [breakEnd, setBreakEnd] = useState(breakEndTime);
   const [travelTime, setTravelTime] = useState(0);
@@ -49,12 +50,22 @@ const Sumup = ({ onCancel, onAccept, startTime, stopTime, breakStartTime, breakE
       </div>
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700">Ylityötunnit</label>
-        <input
-          type="number"
-          value={overclockHours}
-          onChange={(e) => setOverclockHours(e.target.value)}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-        />
+        <div className="flex items-center">
+          <input
+            type="number"
+            value={overtimeHours}
+            onChange={(e) => setOvertimeHours(e.target.value)}
+            className="mt-1 block w-16 border border-gray-300 rounded-md shadow-sm"
+          />
+          <span className="mx-2">h</span>
+          <input
+            type="number"
+            value={overtimeMinutes}
+            onChange={(e) => setOvertimeMinutes(e.target.value)}
+            className="mt-1 block w-16 border border-gray-300 rounded-md shadow-sm"
+          />
+          <span className="ml-2">min</span>
+        </div>
       </div>
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700">Tauon aloitusaika</label>
@@ -127,7 +138,7 @@ const Sumup = ({ onCancel, onAccept, startTime, stopTime, breakStartTime, breakE
           Peruuta
         </button>
         <button
-          onClick={onAccept}
+          onClick={() => onAccept({ date, startTimeState, endTimeState, overtimeHours, overtimeMinutes, breakStart, breakEnd, travelTime, fullDayAllowance, halfDayAllowance, mealCompensation, sick })}
           className="px-4 py-2 bg-green-600 text-white rounded-md"
         >
           Hyväksy
