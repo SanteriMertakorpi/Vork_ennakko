@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Sumup from "./sumup";
+import workInformationService from "../services/workInformation";
 
-const StartDWorkDay = () => {
+const StartDWorkDay = ( workTimePage ) => {
   const [startWorkDay, setStartWorkDay] = useState(false);
   const [showSumup, setShowSumup] = useState(false);
   const [startTime, setStartTime] = useState(null);
@@ -11,6 +12,7 @@ const StartDWorkDay = () => {
   const [pauseTime, setPauseTime] = useState(0);
   const [breakStartTime, setBreakStartTime] = useState(null);
   const [breakEndTime, setBreakEndTime] = useState(null);
+  const [workTimePageState, setWorkTimePageState] = useState(workTimePage);
 
   useEffect(() => {
     let timer;
@@ -36,6 +38,31 @@ const StartDWorkDay = () => {
     return `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
   };
 
+  const onAccept = (summaryData) => {
+    const workEntry = {
+      date: summaryData.date,
+      startTime: summaryData.startTimeState,
+      endTime: summaryData.endTimeState,
+      overtimeHours: summaryData.overtimeHours,
+      overtimeMinutes: summaryData.overtimeMinutes,
+      breakStart: summaryData.breakStart,
+      breakEnd: summaryData.breakEnd,
+      travelTimeHours: summaryData.travelTimeHours,
+      travelTimeMinutes: summaryData.travelTimeMinutes,
+      fullDayAllowance: summaryData.fullDayAllowance,
+      halfDayAllowance: summaryData.halfDayAllowance,
+      mealCompensation: summaryData.mealCompensation,
+      sick: summaryData.sick
+    };
+
+    workInformationService.add(workEntry).then(() => {
+      console.log("Work entry added successfully");
+      setWorkTimePageState(workTimePageState + 1);
+    }).catch((error) => {
+      console.error("Error adding work entry:", error);
+    });
+  };
+
   const date = new Date();
   const hours = date.getHours();
   let minutes = date.getMinutes();
@@ -47,7 +74,7 @@ const StartDWorkDay = () => {
   if (showSumup) {
     return <Sumup 
               onCancel={() => { setShowSumup(false); setStartWorkDay(true); }} 
-              onAccept={() => {setShowSumup(false); setBreakStartTime(null); setBreakEndTime(null); }} 
+              onAccept={(summaryData) => { onAccept(summaryData); setShowSumup(false); setBreakStartTime(null); setBreakEndTime(null); }} 
               startTime={formatStartandStopTime(startTime)} 
               stopTime={formatStartandStopTime(stopTime)} 
               breakStartTime={breakStartTime=== null ? 0 : formatStartandStopTime(breakStartTime)} 

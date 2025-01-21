@@ -7,6 +7,11 @@ const getAll = async () => {
     return response.data;
 };
 
-const workInformationService = { getAll };
+const add = async (newObject) => {
+    const response = await axios.post(baseUrl, newObject);
+    return response.data;
+};
+
+const workInformationService = { getAll, add };
 
 export default workInformationService;

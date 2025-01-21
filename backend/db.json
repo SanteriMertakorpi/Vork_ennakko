@@ -129,6 +129,21 @@
       "halfDayAllowance": true,
       "mealCompensation": false,
       "sick": false
+    },
+    "2025-01-21": {
+      "date": "2025-01-21",
+      "startTime": "16:49",
+      "endTime": "16:49",
+      "overtimeHours": 0,
+      "overtimeMinutes": 0,
+      "breakStart": 0,
+      "breakEnd": 0,
+      "travelTimeHours": 0,
+      "travelTimeMinutes": 0,
+      "fullDayAllowance": false,
+      "halfDayAllowance": false,
+      "mealCompensation": true,
+      "sick": false
     }
   }
 }

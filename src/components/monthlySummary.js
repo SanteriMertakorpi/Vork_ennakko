@@ -12,9 +12,34 @@ const MonthlySummary = () => {
         });
     }, []);
 
+    const calculateSummary = () => {
+        const summary = {
+            workingHours: 0,
+            travelTime: 0,
+            fullDayAllowance: 0,
+            halfDayAllowance: 0,
+            sick: 0,
+            overtimeHours: 0
+        };
+
+        Object.values(workInformation).forEach(entry => {
+            summary.workingHours += entry.workingHours.decimal;
+            summary.travelTime += entry.travelTime.decimal;
+            summary.fullDayAllowance += entry.allowance.fullDayAmount === 0 ? 0 : entry.allowance.fullDayAmount;
+            summary.halfDayAllowance += entry.allowance.halfDayAmount === 0 ? 0 : entry.allowance.halfDayAmount;
+            summary.sick += entry.sick ? 1 : 0;
+            summary.overtimeHours += entry.overtimeHours.decimal;
+        });
+
+        return summary;
+    };
+
+    const summary = calculateSummary();
+
     return(
         <div>
-            <h1 className="text-center text-navbarbackground font-bold relative pt-2">KUUKAUSIKOHTAINEN YHTEENVETO TAMMIKUU</h1>
+            <h1 className="text-center text-navbarbackground font-bold relative pt-2">KUUKAUSIKOHTAINEN YHTEENVETO</h1>
+            <h1 className="text-center text-navbarbackground font-bold relative pt-2">TAMMIKUU</h1>
             <div className="p-4 overflow-x-auto">
                 
                 <table className="table-auto border-collapse border border-gray-300 w-full text-center whitespace-nowrap">
@@ -30,24 +55,35 @@ const MonthlySummary = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {Object.entries(workInformation).map(([date, entry]) => (
+                        <tr className="bg-gray-200 text-navbarbackground font-bold">
+                            <td className="border border-gray-300 px-2 py-1">Yhteensä</td>
+                            <td className="border border-gray-300 px-2 py-1">{summary.workingHours} h</td>
+                            <td className="border border-gray-300 px-2 py-1">{summary.travelTime} h</td>
+                            <td className="border border-gray-300 px-2 py-1">{summary.fullDayAllowance} €</td>
+                            <td className="border border-gray-300 px-2 py-1">{summary.halfDayAllowance} €</td>
+                            <td className="border border-gray-300 px-2 py-1">{summary.sick} pv</td>
+                            <td className="border border-gray-300 px-2 py-1">{summary.overtimeHours} h</td>
+                        </tr>
+                        {Object.entries(workInformation).reverse().map(([date, entry]) => (
                             <tr key={date} className="text-navbarbackground">
                                 <td className="border border-gray-300 px-2 py-1">{date}</td>
                                 <td className="border border-gray-300 px-2 py-1">
-                                    {entry.workingHours.formatted} ({entry.workingHours.decimal})
-                                </td>
-                                <td className="border border-gray-300 px-2 py-1">{entry.travelTime}</td>
-                                <td className="border border-gray-300 px-2 py-1">
-                                    {entry.fullDayAllowance ? "Kyllä" : "Ei"}
+                                    {entry.workingHours.formatted} ({entry.workingHours.decimal} h)
                                 </td>
                                 <td className="border border-gray-300 px-2 py-1">
-                                    {entry.halfDayAllowance ? "Kyllä" : "Ei"}
+                                    {entry.travelTime.formatted} ({entry.travelTime.decimal} h)
+                                </td>
+                                <td className="border border-gray-300 px-2 py-1">
+                                    {entry.allowance.fullDayAmount > entry.allowance.halfDayAmount ? entry.allowance.fullDayAmount : 0}
+                                </td>
+                                <td className="border border-gray-300 px-2 py-1">
+                                    {entry.allowance.fullDayAmount > entry.allowance.halfDayAmount ? 0 : entry.allowance.halfDayAmount}
                                 </td>
                                 <td className="border border-gray-300 px-2 py-1">
                                     {entry.sick ? "Kyllä" : "Ei"}
                                 </td>
                                 <td className="border border-gray-300 px-2 py-1">
-                                    {entry.overtimeHours.formattedOverTime} ({entry.overtimeHours.decimalOverTime})
+                                    {entry.overtimeHours.formatted} ({entry.overtimeHours.decimal} h)
                                 </td>
                             </tr>
                         ))}
