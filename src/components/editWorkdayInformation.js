@@ -4,7 +4,7 @@ const formatDate = (date) => {
   return date.toISOString().split("T")[0];
 };
 
-const Sumup = ({ onCancel, onAccept, startTime, stopTime, breakStartTime, breakEndTime }) => {
+const EditWorkdayInformation = ({ onCancel, onAccept, startTime, stopTime, breakStartTime, breakEndTime }) => {
   const [date, setDate] = useState(formatDate(new Date()));
   const [startTimeState, setStartTimeState] = useState(startTime);
   const [endTimeState, setEndTimeState] = useState(stopTime);
@@ -160,4 +160,4 @@ const Sumup = ({ onCancel, onAccept, startTime, stopTime, breakStartTime, breakE
   );
 };
 
-export default Sumup;
+export default EditWorkdayInformation;

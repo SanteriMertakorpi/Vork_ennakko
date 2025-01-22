@@ -5,7 +5,10 @@ const MonthlySummary = () => {
     const [workInformation, setWorkInformation] = useState([]);
 
     useEffect(() => {
-        workInformationService.getAll().then((data) => {
+        const date = new Date();
+        const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
+        const currentMonth = `${date.getFullYear()}-${month}`
+        workInformationService.getDataOfTheMonth(currentMonth).then((data) => {
             setWorkInformation(data.workEntries);
         }).catch((error) => {
             console.error("Error fetching work information:", error);

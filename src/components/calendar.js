@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 const getWeek = (startDate) => {
   const week = [];
@@ -24,16 +24,9 @@ const getWeekNumber = (date) => {
 };
 
 const Calendar = () => {
-  const [currentWeekStart, setCurrentWeekStart] = useState(getCurrentWeekStart());
+  const currentWeekStart  = getCurrentWeekStart();
   const currentDay = new Date().getDate();
 
-  const nextWeek = () => {
-    setCurrentWeekStart(new Date(currentWeekStart.setDate(currentWeekStart.getDate() + 7)));
-  };
-
-  const prevWeek = () => {
-    setCurrentWeekStart(new Date(currentWeekStart.setDate(currentWeekStart.getDate() - 7)));
-  };
 
   const currentWeek = getWeek(currentWeekStart);
   const monthName = currentWeekStart.toLocaleString('fi-FI', { month: 'long' }).charAt(0).toUpperCase() + currentWeekStart.toLocaleString('fi-FI', { month: 'long' }).slice(1);
@@ -43,10 +36,10 @@ const Calendar = () => {
 
   return (
     <div className="p-4 rounded-t-3xl bg-stone-100 border-b-2">
-      <div className="flex justify-between items-center mb-4 pl-6 pr-6 text-navbarbackground">
-        <button onClick={prevWeek} className="font-extrabold text-lg">&lt;</button>
+      <div className="flex justify-center mb-4 pl-6 pr-6 text-navbarbackground ">
+        
         <h3 className="text-lg font-semibold">{monthName}, vko {weekNumber}</h3>
-        <button onClick={nextWeek} className="font-extrabold text-lg">&gt;</button>
+        
       </div>
       <div>
         <div className="flex justify-between items-center mb-4 pl-6 pr-6 text-navbarbackground font-bold">

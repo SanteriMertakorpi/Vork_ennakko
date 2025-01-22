@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Sumup from "./sumup";
+import EditWorkdayInformation from "./editWorkdayInformation";
 import workInformationService from "../services/workInformation";
+import DailySumup from "./dailySumup"; // Ensure this import is correct
 
 const StartDWorkDay = ( workTimePage ) => {
   const [startWorkDay, setStartWorkDay] = useState(false);
@@ -13,6 +14,7 @@ const StartDWorkDay = ( workTimePage ) => {
   const [breakStartTime, setBreakStartTime] = useState(null);
   const [breakEndTime, setBreakEndTime] = useState(null);
   const [workTimePageState, setWorkTimePageState] = useState(workTimePage);
+  const [summaryData, setSummaryData] = useState(null);
 
   useEffect(() => {
     let timer;
@@ -57,6 +59,7 @@ const StartDWorkDay = ( workTimePage ) => {
 
     workInformationService.add(workEntry).then(() => {
       console.log("Work entry added successfully");
+      setSummaryData(workEntry);
       setWorkTimePageState(workTimePageState + 1);
     }).catch((error) => {
       console.error("Error adding work entry:", error);
@@ -72,14 +75,20 @@ const StartDWorkDay = ( workTimePage ) => {
   const showTime = hours + ":" + minutes;
 
   if (showSumup) {
-    return <Sumup 
-              onCancel={() => { setShowSumup(false); setStartWorkDay(true); }} 
+    return <EditWorkdayInformation 
+              onCancel={() => { setShowSumup(false); setStartWorkDay(true); setIsPaused(true); }} 
               onAccept={(summaryData) => { onAccept(summaryData); setShowSumup(false); setBreakStartTime(null); setBreakEndTime(null); }} 
               startTime={formatStartandStopTime(startTime)} 
               stopTime={formatStartandStopTime(stopTime)} 
               breakStartTime={breakStartTime=== null ? 0 : formatStartandStopTime(breakStartTime)} 
               breakEndTime={breakEndTime=== null ? 0 : formatStartandStopTime(breakEndTime)} 
            />;
+  }
+
+  if (summaryData) {
+    return (
+      <DailySumup summaryData={summaryData} setSummaryData={setSummaryData} />
+    );
   }
 
   if (startWorkDay) {

@@ -36,14 +36,14 @@ const calculateOvertimeHours = (overtimeHours, overtimeMinutes) => {
     };
 };
 
-const calculateTravelTime = (travelHours) => {
-    const totalMinutes = travelHours * 60;
+const calculateTravelTime = (travelHours, travelMinutes) => {
+    const totalMinutes = travelHours * 60 + travelMinutes;
     const totalHours = Math.floor(totalMinutes / 60);
     const totalMinutesLeft = totalMinutes % 60;
 
     return {
         formatted: `${totalHours} h ${totalMinutesLeft} min`,
-        decimal: travelHours
+        decimal: parseFloat((totalMinutes / 60).toFixed(2))
     }
 };
 
@@ -59,7 +59,8 @@ const formatGetData = (data) => {
             endTime, 
             overtimeHours, 
             overtimeMinutes, 
-            travelTime, 
+            travelTimeHours, 
+            travelTimeMinutes,
             fullDayAllowance, 
             halfDayAllowance, 
             mealCompensation,
@@ -72,7 +73,7 @@ const formatGetData = (data) => {
 
         const {formatted: formattedOverTime, decimal: decimalOverTime} = calculateOvertimeHours(overtimeHours, overtimeMinutes);
 
-        const {formatted: formattedTravelTime, decimal: decimalTravelTime} = calculateTravelTime(travelTime);
+        const {formatted: formattedTravelTime, decimal: decimalTravelTime} = calculateTravelTime(travelTimeHours, travelTimeMinutes);
 
         const fullDayAllowanceAmount = fullDayAllowance ? 53 : 0;
         const halfDayAllowanceAmount = halfDayAllowance ? 24 : 0;

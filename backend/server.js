@@ -22,15 +22,24 @@ app.get('/api/data', (req, res) => {
   res.status(200);
 });
 
-app.get('/api/data/:id', (req, res) => {
+app.get('/api/data/:month', (req, res) => {
     const data = JSON.parse(fs.readFileSync('./db.json', 'utf8'));
-    const id = req.params.id;
-    const item = data.workEntries[id];
-    if (item) {
-        res.json(item);
+    const month = req.params.month;
+    const filteredEntries = {};
+
+    for (const [date, details] of Object.entries(data.workEntries)) {
+        if (date.startsWith(month)) {
+            filteredEntries[date] = details;
+        }
+    }
+
+    if (Object.keys(filteredEntries).length > 0) {
+        const formattedData = utils.formatGetData({ workEntries: filteredEntries });
+        res.json(formattedData);
         res.status(200);
     } else {
-        res.status(404).send('Entry not found');
+        res.status(404);
+        res.json('No entries found for the given month');
     }
 });
 
