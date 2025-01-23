@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
+const path = require('path'); // Import path module
 const app = express();
 const PORT = 5000;
 const utils = require('./utils');
@@ -8,22 +9,23 @@ const utils = require('./utils');
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'build'))); // Serve static files from the build directory
 
 // Routes
 app.get('/', (req, res) => {
-    res.send('Hello World');
+    res.sendFile(path.join(__dirname, 'build', 'index.html')); // Serve the frontend's index.html
     res.status(200);
 });
 
 app.get('/api/data', (req, res) => {
-  const data = JSON.parse(fs.readFileSync('./db.json', 'utf8'));
+  const data = JSON.parse(fs.readFileSync('./backend/db.json', 'utf8'));
   const responseData = utils.formatGetData(data);
   res.json(responseData);
   res.status(200);
 });
 
 app.get('/api/data/:month', (req, res) => {
-    const data = JSON.parse(fs.readFileSync('./db.json', 'utf8'));
+    const data = JSON.parse(fs.readFileSync('./backend/db.json', 'utf8'));
     const month = req.params.month;
     const filteredEntries = {};
 
@@ -39,12 +41,13 @@ app.get('/api/data/:month', (req, res) => {
         res.status(200);
     } else {
         res.status(404);
-        res.json('No entries found for the given month');
+        res.json({});
     }
 });
 
 app.post('/api/data', (req, res) => {
     const newEntry = req.body;
+    console.log(newEntry);
     const requiredFields = [
         'date', 'startTime', 'endTime', 'overtimeHours', 'overtimeMinutes', 'breakStart', 'breakEnd', 
         'travelTimeHours', 'travelTimeMinutes', 'fullDayAllowance', 'halfDayAllowance', 'mealCompensation', 'sick'
@@ -56,10 +59,15 @@ app.post('/api/data', (req, res) => {
         }
     }
 
-    const data = JSON.parse(fs.readFileSync('./db.json', 'utf8'));
+    const data = JSON.parse(fs.readFileSync('./backend/db.json', 'utf8'));
     data.workEntries[newEntry.date] = newEntry;
-    fs.writeFileSync('./db.json', JSON.stringify(data, null, 2));
+    fs.writeFileSync('./backend/db.json', JSON.stringify(data, null, 2));
     res.status(201).send('Entry added successfully');
+});
+
+// Catch-all route to handle client-side routing
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 // Start server

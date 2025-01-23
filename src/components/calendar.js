@@ -29,7 +29,7 @@ const Calendar = () => {
 
 
   const currentWeek = getWeek(currentWeekStart);
-  const monthName = currentWeekStart.toLocaleString('fi-FI', { month: 'long' }).charAt(0).toUpperCase() + currentWeekStart.toLocaleString('fi-FI', { month: 'long' }).slice(1);
+  const monthName = currentWeekStart.toLocaleString('default', { month: 'long' }).charAt(0).toUpperCase() + currentWeekStart.toLocaleString('default', { month: 'long' }).slice(1);
   const weekNumber = getWeekNumber(currentWeekStart);
   const dayNames = ['Ma', 'Ti', 'Ke', 'To', 'Pe', 'La', 'Su'];
   const dayNumbers = currentWeek.map(date => date.getDate());

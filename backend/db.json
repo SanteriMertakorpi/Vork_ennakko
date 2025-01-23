@@ -1,5 +1,61 @@
 {
   "workEntries": {
+    "2024-11-01": {
+      "startTime": "08:00",
+      "endTime": "16:00",
+      "overtimeHours": 1,
+      "overtimeMinutes": 0,
+      "breakStart": "12:00",
+      "breakEnd": "12:30",
+      "travelTimeHours": 0,
+      "travelTimeMinutes": 30,
+      "fullDayAllowance": true,
+      "halfDayAllowance": false,
+      "mealCompensation": true,
+      "sick": false
+    },
+    "2024-11-02": {
+      "startTime": "08:30",
+      "endTime": "16:30",
+      "overtimeHours": 0,
+      "overtimeMinutes": 0,
+      "breakStart": "12:00",
+      "breakEnd": "12:30",
+      "travelTimeHours": 1,
+      "travelTimeMinutes": 0,
+      "fullDayAllowance": false,
+      "halfDayAllowance": true,
+      "mealCompensation": false,
+      "sick": false
+    },
+    "2024-12-01": {
+      "startTime": "09:00",
+      "endTime": "17:00",
+      "overtimeHours": 2,
+      "overtimeMinutes": 0,
+      "breakStart": "12:30",
+      "breakEnd": "13:00",
+      "travelTimeHours": 0,
+      "travelTimeMinutes": 0,
+      "fullDayAllowance": true,
+      "halfDayAllowance": false,
+      "mealCompensation": true,
+      "sick": false
+    },
+    "2024-12-02": {
+      "startTime": "08:00",
+      "endTime": "16:00",
+      "overtimeHours": 0,
+      "overtimeMinutes": 0,
+      "breakStart": "12:00",
+      "breakEnd": "12:30",
+      "travelTimeHours": 0,
+      "travelTimeMinutes": 30,
+      "fullDayAllowance": false,
+      "halfDayAllowance": true,
+      "mealCompensation": false,
+      "sick": false
+    },
     "2025-01-10": {
       "startTime": "08:00",
       "endTime": "16:00",
@@ -168,6 +224,21 @@
       "fullDayAllowance": false,
       "halfDayAllowance": false,
       "mealCompensation": false,
+      "sick": false
+    },
+    "2025-01-23": {
+      "date": "2025-01-23",
+      "startTime": "12:00",
+      "endTime": "14:50",
+      "overtimeHours": 0,
+      "overtimeMinutes": 0,
+      "breakStart": "13:00",
+      "breakEnd": "13:15",
+      "travelTimeHours": 0,
+      "travelTimeMinutes": 0,
+      "fullDayAllowance": false,
+      "halfDayAllowance": false,
+      "mealCompensation": true,
       "sick": false
     }
   }

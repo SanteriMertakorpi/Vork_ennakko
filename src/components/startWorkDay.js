@@ -1,20 +1,35 @@
 import React, { useState, useEffect } from "react";
+import { FaRegCirclePlay } from "react-icons/fa6";
 import EditWorkdayInformation from "./editWorkdayInformation";
+import { MdOutlineStopCircle, MdOutlinePauseCircle } from "react-icons/md";
 import workInformationService from "../services/workInformation";
-import DailySumup from "./dailySumup"; // Ensure this import is correct
+import DailySumup from "./dailySumup";
 
 const StartDWorkDay = ( workTimePage ) => {
-  const [startWorkDay, setStartWorkDay] = useState(false);
+  const [workdayInformation, setWorkdayInformation] = useState(() => {
+    const saved = localStorage.getItem("workdayInformation");
+    return saved ? JSON.parse(saved) : {
+      startWorkDay: false,
+      startTime: null,
+      elapsedTime: 0,
+      isPaused: false,
+      pauseTime: 0,
+      signedToWorkSite: false
+    };
+  });
+
+  const [startWorkDay, setStartWorkDay] = useState(workdayInformation.startWorkDay);
   const [showSumup, setShowSumup] = useState(false);
-  const [startTime, setStartTime] = useState(null);
+  const [startTime, setStartTime] = useState(workdayInformation.startTime ? new Date(workdayInformation.startTime) : null);
   const [stopTime, setStopTime] = useState(null);
-  const [elapsedTime, setElapsedTime] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const [pauseTime, setPauseTime] = useState(0);
+  const [elapsedTime, setElapsedTime] = useState(workdayInformation.elapsedTime);
+  const [isPaused, setIsPaused] = useState(workdayInformation.isPaused);
+  const [pauseTime, setPauseTime] = useState(workdayInformation.pauseTime);
   const [breakStartTime, setBreakStartTime] = useState(null);
   const [breakEndTime, setBreakEndTime] = useState(null);
   const [workTimePageState, setWorkTimePageState] = useState(workTimePage);
   const [summaryData, setSummaryData] = useState(null);
+  const [signedToWorkSite, setSignedToWorkSite] = useState(workdayInformation.signedToWorkSite);
 
   useEffect(() => {
     let timer;
@@ -27,6 +42,18 @@ const StartDWorkDay = ( workTimePage ) => {
     }
     return () => clearInterval(timer);
   }, [startWorkDay, isPaused, startTime, pauseTime]);
+
+  useEffect(() => {
+    const workdayInfo = {
+      startWorkDay,
+      startTime: startTime ? startTime.toISOString() : null,
+      elapsedTime,
+      isPaused,
+      pauseTime,
+      signedToWorkSite
+    };
+    localStorage.setItem("workdayInformation", JSON.stringify(workdayInfo));
+  }, [startWorkDay, startTime, elapsedTime, isPaused, pauseTime, signedToWorkSite]);
 
   const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600);
@@ -77,7 +104,7 @@ const StartDWorkDay = ( workTimePage ) => {
   if (showSumup) {
     return <EditWorkdayInformation 
               onCancel={() => { setShowSumup(false); setStartWorkDay(true); setIsPaused(true); }} 
-              onAccept={(summaryData) => { onAccept(summaryData); setShowSumup(false); setBreakStartTime(null); setBreakEndTime(null); }} 
+              onAccept={(summaryData) => { onAccept(summaryData); setShowSumup(false); setBreakStartTime(null); setBreakEndTime(null); setSignedToWorkSite(false); }} 
               startTime={formatStartandStopTime(startTime)} 
               stopTime={formatStartandStopTime(stopTime)} 
               breakStartTime={breakStartTime=== null ? 0 : formatStartandStopTime(breakStartTime)} 
@@ -98,9 +125,20 @@ const StartDWorkDay = ( workTimePage ) => {
                 <div className="grid justify-items-center p-4">
                     <p className="text-xs text-gray-500">Työmaalle kirjautuminen</p>
                     <p className="text-2xl">{showTime}</p>
-                    <button className="w-5/6 h-14 rounded-md bg-green-600 font-semibold text-white my-2">
+                    {!signedToWorkSite ?
+                      <button 
+                        className="w-5/6 h-14 rounded-md bg-green-600 font-semibold text-white my-2"
+                        onClick={() => {setSignedToWorkSite(true);}}>
                         Kirjaudu työmaalle
-                    </button>
+                      </button>
+                      :
+                      <button
+                      className="w-5/6 h-14 rounded-md bg-red-600 font-semibold text-white my-2"
+                      onClick={() => {setSignedToWorkSite(false);}}>
+                        Kirjaudu ulos työmaalta
+                      </button>
+                    }
+                    
                 </div>
             </div>
             <div className="grid grid-cols-1 gap-4 bg-white m-6 rounded-md">
@@ -120,10 +158,21 @@ const StartDWorkDay = ( workTimePage ) => {
                                 }
                             }}
                         >
-                            {isPaused ? "Jatka" : "Tauko"}
+                            {isPaused 
+                            ? 
+                            <div className="flex justify-center items-center">
+                              <FaRegCirclePlay size={16} className="mr-1"/>
+                              <p>Jatka</p>
+                            </div>
+                            : 
+                            <div className="flex justify-center items-center">
+                              <MdOutlinePauseCircle size={16} className="mr-1"/>
+                              <p>Tauko</p>
+                            </div>
+                            }
                         </button>
                         <button
-                            className="w-1/2 h-10 rounded-md bg-red-600 text-white font-semibold my-2"
+                            className="w-1/2 min-w-fit h-10 rounded-md bg-red-600 text-white font-semibold my-2"
                             onClick={() => {
                                 setStartWorkDay(false);
                                 setStopTime(new Date());
@@ -132,7 +181,11 @@ const StartDWorkDay = ( workTimePage ) => {
                                 setShowSumup(true);
                             }}
                         >
-                            Päätä työpäivä
+                          <div className="flex justify-center items-center p-2">
+                            <MdOutlineStopCircle size={16} className="m-1"/>
+                            <p>Päätä työpäivä</p>
+                          </div>
+                            
                         </button>
                     </div>
                 </div>
@@ -153,7 +206,11 @@ const StartDWorkDay = ( workTimePage ) => {
             setStartTime(new Date());
           }}
         >
-          Aloita työpäivä
+          <div className="flex justify-center items-center">
+            <FaRegCirclePlay size={20} className="mr-2 mt-1"/>
+            <p>Aloita työpäivä</p>
+          </div>
+          
         </button>
       </div>
     </div>

@@ -5,7 +5,7 @@ const DailySumup = ({ summaryData, setSummaryData }) => {
     <div className="p-4 bg-white rounded-md m-6 relative">
       <button
         className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-        onClick={() => setSummaryData(null)}
+        onClick={() => {setSummaryData(null); localStorage.removeItem("workdayInformation")}}
       >
         X
       </button>

@@ -1,19 +1,28 @@
 import React, {useState, useEffect} from "react";
+import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import workInformationService from "../services/workInformation";
 
 const MonthlySummary = () => {
     const [workInformation, setWorkInformation] = useState([]);
+    const [currentMonth, setCurrentMonth] = useState(new Date());
 
     useEffect(() => {
-        const date = new Date();
-        const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
-        const currentMonth = `${date.getFullYear()}-${month}`
-        workInformationService.getDataOfTheMonth(currentMonth).then((data) => {
-            setWorkInformation(data.workEntries);
-        }).catch((error) => {
-            console.error("Error fetching work information:", error);
-        });
-    }, []);
+        const fetchWorkInformation = (date) => {
+            const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
+            const formattedMonth = `${date.getFullYear()}-${month}`;
+            workInformationService.getDataOfTheMonth(formattedMonth).then((data) => {
+                setWorkInformation(data.workEntries);
+            }).catch((error) => {
+                if (error.response && error.response.status === 404) {
+                    setWorkInformation([]);
+                } else {
+                    console.error("Error fetching work information:", error);
+                }
+            });
+        };
+
+        fetchWorkInformation(currentMonth);
+    }, [currentMonth]);
 
     const calculateSummary = () => {
         const summary = {
@@ -37,14 +46,34 @@ const MonthlySummary = () => {
         return summary;
     };
 
+    const handlePreviousMonth = () => {
+        setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() - 1)));
+    };
+
+    const handleNextMonth = () => {
+        setCurrentMonth(new Date(currentMonth.setMonth(currentMonth.getMonth() + 1)));
+    };
+
+    const getMonthName = (date) => {
+        return date.toLocaleString('default', { month: 'long' }).charAt(0).toUpperCase() + date.toLocaleString('default', { month: 'long' }).slice(1);
+    };
+
     const summary = calculateSummary();
 
     return(
         <div>
             <h1 className="text-center text-navbarbackground font-bold relative pt-2">KUUKAUSIKOHTAINEN YHTEENVETO</h1>
-            <h1 className="text-center text-navbarbackground font-bold relative pt-2">TAMMIKUU</h1>
+            <div className="flex justify-center items-center pt-2">
+                <button onClick={handlePreviousMonth} className="px-8 py-4 font-bold">
+                    <GrFormPrevious size={36} color="#002146" />
+                </button>
+                <h1 className="text-center text-navbarbackground font-bold relative  mx-4">{getMonthName(currentMonth)}</h1>
+                {currentMonth.getMonth() === new Date().getMonth() && currentMonth.getFullYear() === new Date().getFullYear() ? <div className="px-12 py-4"></div> : 
+                <button onClick={handleNextMonth} className="px-8 py-4  font-bold">
+                    <GrFormNext size={36} color="#002146"/>
+                </button>}
+            </div>
             <div className="p-4 overflow-x-auto">
-                
                 <table className="table-auto border-collapse border border-gray-300 w-full text-center whitespace-nowrap">
                     <thead>
                         <tr className="bg-mainbackground text-navbarbackground">
@@ -67,7 +96,7 @@ const MonthlySummary = () => {
                             <td className="border border-gray-300 px-2 py-1">{summary.sick} pv</td>
                             <td className="border border-gray-300 px-2 py-1">{summary.overtimeHours} h</td>
                         </tr>
-                        {Object.entries(workInformation).reverse().map(([date, entry]) => (
+                        { Object.entries(workInformation).reverse().map(([date, entry]) => (
                             <tr key={date} className="text-navbarbackground">
                                 <td className="border border-gray-300 px-2 py-1">{date}</td>
                                 <td className="border border-gray-300 px-2 py-1">
