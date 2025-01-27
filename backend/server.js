@@ -7,7 +7,7 @@ const PORT = 5000;
 const utils = require('./utils');
 
 // Middleware
-app.use(cors());
+//app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'build'))); // Serve static files from the build directory
 
@@ -18,14 +18,14 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/data', (req, res) => {
-  const data = JSON.parse(fs.readFileSync('./backend/db.json', 'utf8'));
+  const data = JSON.parse(fs.readFileSync('./db.json', 'utf8'));
   const responseData = utils.formatGetData(data);
   res.json(responseData);
   res.status(200);
 });
 
 app.get('/api/data/:month', (req, res) => {
-    const data = JSON.parse(fs.readFileSync('./backend/db.json', 'utf8'));
+    const data = JSON.parse(fs.readFileSync('./db.json', 'utf8'));
     const month = req.params.month;
     const filteredEntries = {};
 
@@ -59,9 +59,9 @@ app.post('/api/data', (req, res) => {
         }
     }
 
-    const data = JSON.parse(fs.readFileSync('./backend/db.json', 'utf8'));
+    const data = JSON.parse(fs.readFileSync('./db.json', 'utf8'));
     data.workEntries[newEntry.date] = newEntry;
-    fs.writeFileSync('./backend/db.json', JSON.stringify(data, null, 2));
+    fs.writeFileSync('./db.json', JSON.stringify(data, null, 2));
     res.status(201).send('Entry added successfully');
 });
 
