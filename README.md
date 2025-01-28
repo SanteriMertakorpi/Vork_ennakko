@@ -21,6 +21,8 @@ Käynnistääksesi sovelluksen paikallisesti, seuraa näitä ohjeita:
     Käynnistä sovellus komennolla ```node server.js```. HUOM! sovelluksen käynnistäminen tulee tapahtua
     ```/backend``` kansiossa.
 
+   Sovellus avautuu osoitteeseen ```localhost:5000```.
+
 ## Sovelluksen toiminta
 
 Sovellus avautuu työaikasivulle, jossa käyttäjälle näkyy kalenteri, joka ilmoittaa kyseisen kuukauden, viikon ja päivän. Tällä sivulla, käyttäjällä on mahdollisuus käynnistää kellokortti painamalla "Aloita työpäivä" nappia.
