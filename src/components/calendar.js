@@ -1,5 +1,10 @@
 import React from "react";
 
+/**
+ * Funktio, joka palauttaa viikon päivät annetusta päivästä
+ * @param {Date} startDate Viikon ensimmäinen päivä
+ * @returns Kyseisen viikon päivät
+ */
 const getWeek = (startDate) => {
   const week = [];
   const date = new Date(startDate);
@@ -10,29 +15,45 @@ const getWeek = (startDate) => {
   return week;
 };
 
+/**
+ * 
+ * @returns Nykyisen viikon ensimmäinen päivä
+ */
 const getCurrentWeekStart = () => {
   const now = new Date();
   const day = now.getDay();
-  const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+  const diff = now.getDate() - day + (day === 0 ? -6 : 1); // Sunnuntai on viikon viimeinen päivä
   return new Date(now.setDate(diff));
 };
 
+/**
+ * Selvittää annetun päivän viikon numeron
+ * @param {Date} date Päivä, jonka viikon numero halutaan selvittää
+ * @returns Viiikon numero
+ */
 const getWeekNumber = (date) => {
-  const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
-  const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
-  return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7) === 53 ? 1: Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+  const firstDayOfYear = new Date(date.getFullYear(), 0, 1); // Vuoden ensimmäinen päivä
+  const pastDaysOfYear = (date - firstDayOfYear) / 86400000; // Kuluneet päivät vuoden alusta
+  return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7) === 53 ? 1: Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7); // Viikon numero
 };
 
+
+/**
+ * Kaleterinäkymä, joka näyttää nykyisen viikon päivät
+ * Ympyrässä oleva päivä on nykyinen päivä
+ * @returns Kalenterinäkymä
+ */
 const Calendar = () => {
-  const currentWeekStart  = getCurrentWeekStart();
+  const currentWeekStart  = getCurrentWeekStart(); // Nykyisen viikon ensimmäinen päivä
   const currentDay = new Date().getDate();
 
 
-  const currentWeek = getWeek(currentWeekStart);
-  const monthName = currentWeekStart.toLocaleString('default', { month: 'long' }).charAt(0).toUpperCase() + currentWeekStart.toLocaleString('default', { month: 'long' }).slice(1);
+  const currentWeek = getWeek(currentWeekStart); // Nykyisen viikon päivät
+  // Muutetaan kuukauden nimi alkamaan isolla kirjaimella ja esitetään se laitteen kielellä
+  const monthName = currentWeekStart.toLocaleString('default', { month: 'long' }).charAt(0).toUpperCase() + currentWeekStart.toLocaleString('default', { month: 'long' }).slice(1); 
   const weekNumber = getWeekNumber(currentWeekStart);
   const dayNames = ['Ma', 'Ti', 'Ke', 'To', 'Pe', 'La', 'Su'];
-  const dayNumbers = currentWeek.map(date => date.getDate());
+  const dayNumbers = currentWeek.map(date => date.getDate()); // Päivämäärät
 
   return (
     <div className="p-4 rounded-t-3xl bg-stone-100 border-b-2">

@@ -2,11 +2,21 @@ import React, {useState, useEffect} from "react";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import workInformationService from "../services/workInformation";
 
+
+/**
+ * 
+ * @returns Komponentti, joka näyttää kuukausikohtaisen yhteenvedon työajoista taulukkona
+ */
 const MonthlySummary = () => {
     const [workInformation, setWorkInformation] = useState([]);
     const [currentMonth, setCurrentMonth] = useState(new Date());
 
+    // Haetaan työaikamerkinnät kuukauden vaihtuessa
     useEffect(() => {
+        /**
+         * 
+         * @param {Date} date päivämäärä, jonka työaikamerkinnät halutaan hakea
+         */
         const fetchWorkInformation = (date) => {
             const month = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
             const formattedMonth = `${date.getFullYear()}-${month}`;
@@ -24,6 +34,10 @@ const MonthlySummary = () => {
         fetchWorkInformation(currentMonth);
     }, [currentMonth]);
 
+    /**
+     * Laskee kuukauden yhteenvedon
+     * @returns Yhteismäärän työajoista, matkustusajoista, kokopäivärahoista, osapäivärahoista, sairauspäivistä ja ylityötunneista
+     */
     const calculateSummary = () => {
         const summary = {
             workingHours: 0,

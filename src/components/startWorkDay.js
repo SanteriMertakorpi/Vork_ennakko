@@ -5,7 +5,14 @@ import { MdOutlineStopCircle, MdOutlinePauseCircle } from "react-icons/md";
 import workInformationService from "../services/workInformation";
 import DailySumup from "./dailySumup";
 
+/**
+ * 
+ * @param {int} workTimePage Tilassa oleva sivu
+ * @returns Komponentti, joka näyttää aloitusnäkymän työpäivän aloittamiseen ja lopettamiseen
+ */
 const StartDWorkDay = ( workTimePage ) => {
+
+  //Hakee työpäivän tiedot local storagesta
   const [workdayInformation, setWorkdayInformation] = useState(() => {
     const saved = localStorage.getItem("workdayInformation");
     return saved ? JSON.parse(saved) : {
@@ -31,6 +38,7 @@ const StartDWorkDay = ( workTimePage ) => {
   const [summaryData, setSummaryData] = useState(null);
   const [signedToWorkSite, setSignedToWorkSite] = useState(workdayInformation.signedToWorkSite);
 
+  // Työajan ajastimen hallinta
   useEffect(() => {
     let timer;
     if (startWorkDay && !isPaused) {
@@ -43,6 +51,8 @@ const StartDWorkDay = ( workTimePage ) => {
     return () => clearInterval(timer);
   }, [startWorkDay, isPaused, startTime, pauseTime]);
 
+
+  // Tallentaa työpäivän tiedot local storageen
   useEffect(() => {
     const workdayInfo = {
       startWorkDay,
@@ -55,18 +65,32 @@ const StartDWorkDay = ( workTimePage ) => {
     localStorage.setItem("workdayInformation", JSON.stringify(workdayInfo));
   }, [startWorkDay, startTime, elapsedTime, isPaused, pauseTime, signedToWorkSite]);
 
+  /**
+   * 
+   * @param {int} seconds sekuntien määrä
+   * @returns Sekunnit formatoituna tunneiksi ja minuuteiksi
+   */
   const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
     return `${hrs}h ${mins}m `;
   };
 
+  /**
+   * 
+   * @param {Date} date Aikaleima
+   * @returns Aikaleiman formatoituna muotoon hh:mm
+   */
   const formatStartandStopTime = (date) => {
     const hours = date.getHours();
     const minutes = date.getMinutes();
     return `${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
   };
 
+  /**
+   * Lähettää työpäivän tiedot palvelimelle
+   * @param {*} summaryData 
+   */
   const onAccept = (summaryData) => {
     const workEntry = {
       date: summaryData.date,

@@ -1,5 +1,12 @@
 import React from "react";
 
+
+/**
+ * 
+ * @param {*} summaryData Työpäivän yhteenveto 
+ * @param {*} setSummaryData Funktio joka asettaa työpäivän yhteenvedon
+ * @returns Sivu joka näyttää työpäivän yhteenvedon
+ */
 const DailySumup = ({ summaryData, setSummaryData }) => {
   return (
     <div className="p-4 bg-white rounded-md m-6 relative">

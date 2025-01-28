@@ -4,6 +4,10 @@ import Calendar from "./calendar";
 import StartDWorkDay from "./startWorkDay";
 import MonthlySummary from "./monthlySummary";
 
+/**
+ * 
+ * @returns Pääsivu, jossa on Header ja joko Calendar ja StartWorkDay tai MonthlySummary
+ */
 const Main = () => {
 
     const [workTimePage, setWorkTimePage] = useState(true)

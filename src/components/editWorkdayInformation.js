@@ -1,9 +1,25 @@
 import React, { useState } from "react";
 
+
+/**
+ * 
+ * @param {Date} date 
+ * @returns Päivämäärä muodossa vvvv-kk-pp
+ */
 const formatDate = (date) => {
   return date.toISOString().split("T")[0];
 };
 
+/**
+ * 
+ * @param {*} onCancel Peruuta-napin toiminto
+ * @param {*} onAccept Hyväksy-napin toiminto
+ * @param {Date} startTime Työpäivän aloitusaika
+ * @param {Date} stopTime Työpäivän lopetusaika
+ * @param {Date} breakStartTime Tauon aloitusaika
+ * @param {Date} breakEndTime Tauon lopetusaika
+ * @returns Komponentti, joka näyttää työpäivän tiedot ja mahdollistaa niiden muokkaamisen
+ */
 const EditWorkdayInformation = ({ onCancel, onAccept, startTime, stopTime, breakStartTime, breakEndTime }) => {
   const [date, setDate] = useState(formatDate(new Date()));
   const [startTimeState, setStartTimeState] = useState(startTime);

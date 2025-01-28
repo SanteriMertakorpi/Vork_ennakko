@@ -1,4 +1,11 @@
 import React, {useState, useEffect} from "react";
+
+/**
+ * 
+ * @param {int} workTimePage Näytettävä sivu
+ * @param {function} setWorkTimePage Funktio, joka asettaa näytettävän sivun 
+ * @returns Navbar-komponentti, jossa on kaksi painiketta
+ */
 const Navbar = ({workTimePage, setWorkTimePage}) => {
     const [activeTab, setActivetab] = useState("tyoaika");
 
